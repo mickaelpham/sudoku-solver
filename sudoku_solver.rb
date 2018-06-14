@@ -6,18 +6,23 @@ class SudokuSolver
   end
 
   def solve
-    until empty_cells.empty?
-      empty_cells.each.with_index do |at, index|
-        possible = ('1'..'9').to_a - col(at) - row(at) - sub_box(at)
+    index = 0
+    while index < empty_cells.size
+      at  = empty_cells[index]
+      val = board[at[ROW]][at[COL]]
 
-        case possible.size
-        when 0
-          raise "no possible value at #{at}"
-        when 1
-          board[at[ROW]][at[COL]] = possible[0]
-          empty_cells.delete_at(index)
-        end
+      if val == '.'
+        board[at[ROW]][at[COL]] = '1'
+      elsif val == '9'
+        # backtrack
+        board[at[ROW]][at[COL]] = '.'
+        index -= 1
+        next
+      else
+        board[at[ROW]][at[COL]] = (val.to_i + 1).to_s
       end
+
+      index += 1 if valid?(at)
     end
   end
 
@@ -37,6 +42,12 @@ class SudokuSolver
       row.each.with_index do |col, j|
         cells << [i, j] if col == '.'
       end
+    end
+  end
+
+  def valid?(at)
+    [row(at), col(at), sub_box(at)].all? do |cells|
+      cells.one? { |cell| cell == board[at[ROW]][at[COL]] }
     end
   end
 
