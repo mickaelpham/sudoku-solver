@@ -15,11 +15,11 @@ class SudokuSolver
 
       if val == '9'
         # backtrack
-        board[at[ROW]][at[COL]] = '.'
+        board[at[ROW]][at[COL]] = EMPTY
         index -= 1
       else
         # start at 1 -or- increment the current val
-        board[at[ROW]][at[COL]] = val == '.' ? '1' : (val.to_i + 1).to_s
+        board[at[ROW]][at[COL]] = val == EMPTY ? '1' : (val.to_i + 1).to_s
         index += 1 if valid?(at)
       end
     end
@@ -29,8 +29,9 @@ class SudokuSolver
 
   attr_reader :board
 
-  ROW = 0
-  COL = 1
+  ROW   = 0
+  COL   = 1
+  EMPTY = '.'.freeze
 
   def initialize(board)
     @board = board
@@ -39,7 +40,7 @@ class SudokuSolver
   def empty_cells
     @empty_cells ||= board.each.with_index.with_object([]) do |(row, i), cells|
       row.each.with_index do |col, j|
-        cells << [i, j] if col == '.'
+        cells << [i, j] if col == EMPTY
       end
     end
   end
