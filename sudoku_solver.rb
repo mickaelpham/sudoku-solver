@@ -8,21 +8,20 @@ class SudokuSolver
   def solve
     index = 0
     while index < empty_cells.size
+      raise 'invalid sudoku' if index < 0
+
       at  = empty_cells[index]
       val = board[at[ROW]][at[COL]]
 
-      if val == '.'
-        board[at[ROW]][at[COL]] = '1'
-      elsif val == '9'
+      if val == '9'
         # backtrack
         board[at[ROW]][at[COL]] = '.'
         index -= 1
-        next
       else
-        board[at[ROW]][at[COL]] = (val.to_i + 1).to_s
+        # start at 1 -or- increment the current val
+        board[at[ROW]][at[COL]] = val == '.' ? '1' : (val.to_i + 1).to_s
+        index += 1 if valid?(at)
       end
-
-      index += 1 if valid?(at)
     end
   end
 

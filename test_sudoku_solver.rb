@@ -63,4 +63,20 @@ class TestSudokuSolver < Minitest::Test
 
     assert_equal solved_board, board
   end
+
+  def test_invalid_sudoku
+    board = [
+      %w[5 5 . . 7 . . . .],
+      %w[6 . . 1 9 5 . . .],
+      %w[. 9 8 . . . . 6 .],
+      %w[8 . . . 6 . . . 3],
+      %w[4 . . 8 . 3 . . 1],
+      %w[7 . . . 2 . . . 6],
+      %w[. 6 . . . . 2 8 .],
+      %w[. . . 4 1 9 . . 5],
+      %w[. . . . 8 . . 7 9]
+    ]
+
+    assert_raises(RuntimeError) { SudokuSolver.solve(board) }
+  end
 end
