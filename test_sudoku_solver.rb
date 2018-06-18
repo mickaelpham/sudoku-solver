@@ -77,6 +77,6 @@ class TestSudokuSolver < Minitest::Test
       %w[. . . . 8 . . 7 9]
     ]
 
-    assert_raises(RuntimeError) { SudokuSolver.solve(board) }
+    assert_raises(RuntimeError, 'invalid sudoku') { SudokuSolver.solve(board) }
   end
 end
